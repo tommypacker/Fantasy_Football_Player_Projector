@@ -1,24 +1,30 @@
 #!/usr/bin/env python
 from __future__ import print_function
+import time
+from datetime import date
+from datetime import timedelta
+
 from alchemyapi import AlchemyAPI
 from TwitterAPI import TwitterAPI
-import time
 from TwitterKeys import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET
 
-def main():
-	api = TwitterAPI(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
-	SEARCH_TERM = raw_input("Enter a search term: ")
-	count = raw_input("Enter the number of tweets to check: ")
-	until = time.strftime("%d/%m/%Y")
-	lang = 'en'
-	# List of all the tweets
-	collection = []
-	r = api.request('search/tweets', {'lang': lang, 'q': SEARCH_TERM, 'count': count})
-	for item in r:
-		collection.append(item['text'])
-	score = calculate_sentiment(collection)
-	print(score)
+#Retrieves the date of the last Sunday
+today = date.today()
+offset = (today.weekday() - 6) % 7
+last_sunday = today - timedelta(offset)
 
+def main():
+    api = TwitterAPI(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
+    SEARCH_TERM = raw_input("Enter a search term: ")
+    count = raw_input("Enter the number of tweets to check: ")
+    lang = 'en'
+    # List of all the tweets
+    collection = []
+    r = api.request('search/tweets', {'lang': lang, 'q': SEARCH_TERM, 'count': count, 'since': last_sunday})
+    for item in r:
+    	collection.append(item['text'])
+    score = calculate_sentiment(collection)
+    print(score)
 
 def calculate_sentiment(tweet_collection):
     sentiment = [0.0,0.0]
@@ -37,9 +43,8 @@ def calculate_sentiment(tweet_collection):
                 counter += 1
         else:
             print('Error in sentiment analysis call: ', response['statusInfo'])
-
-
-    score = sentiment[1]
+    #Percent of positive replies
+    score = (float(sentiment[1])/counter)*100
     return score
 
 
