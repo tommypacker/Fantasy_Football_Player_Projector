@@ -15,16 +15,23 @@ last_sunday = today - timedelta(offset)
 
 def main():
     api = TwitterAPI(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
-    SEARCH_TERM = raw_input("Enter a search term: ")
+    PLAYER_ONE = raw_input("Enter the name of player one: ")
+    PLAYER_TWO = raw_input("Enter the name of player two: ")
     count = raw_input("Enter the number of tweets to check: ")
     lang = 'en'
     # List of all the tweets
-    collection = []
-    r = api.request('search/tweets', {'lang': lang, 'q': SEARCH_TERM, 'count': count, 'since': last_sunday})
-    for item in r:
-    	collection.append(item['text'])
-    score = calculate_sentiment(collection)
-    print(score)
+    collection1 = []
+    collection2 = []
+    r1 = api.request('search/tweets', {'lang': lang, 'q': PLAYER_ONE, 'count': count, 'since': last_sunday})
+    for item in r1:
+    	collection1.append(item['text'])
+    r2 = api.request('search/tweets', {'lang': lang, 'q': PLAYER_TWO, 'count': count, 'since': last_sunday})
+    for item in r2:
+        collection2.append(item['text'])
+    score1 = calculate_sentiment(collection1)
+    score2 = calculate_sentiment(collection2)
+    print(PLAYER_ONE + ": " + str(score1))
+    print(PLAYER_TWO + ": " + str(score2))
 
 def calculate_sentiment(tweet_collection):
     sentiment = [0.0,0.0]
