@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="http://d3js.org/d3.v3.min.js" language="JavaScript"></script>
+    <script src="liquidFillGauge.js" language="JavaScript"></script>
+    <style>
+        .liquidFillGaugeText { font-family: Helvetica; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="container" style = "width:100%">
+        <div style = "float:left; width: 25%;">
+            <svg id="fillgauge1" width="97%" height="250"></svg>
+        </div>
+        <div style = "float:left; width: 25%;">
+            <svg id="fillgauge2" width="97%" height="250"></svg>
+        </div>
+    </div>
+    <script language="JavaScript">
+        var config1 = liquidFillGaugeDefaultSettings();
+        config1.circleColor = "#FF7777";
+        config1.textColor = "#FF4444";
+        config1.waveTextColor = "#FFAAAA";
+        config1.waveColor = "#FFDDDD";
+        config1.circleThickness = 0.2;
+        config1.textVertPosition = 0.2;
+        config1.waveAnimateTime = 1000;
+        var gauge1= loadLiquidFillGauge("fillgauge1", 50, config1);
+        var config2 = liquidFillGaugeDefaultSettings();
+        config2.circleColor = "#178BCA";
+        config2.textColor = "#045681";
+        config2.waveTextColor = "#A4DBf8";
+        config2.waveColor = "#178BCA";
+        config2.circleThickness = 0.2;
+        config2.textVertPosition = 0.2;
+        config2.waveAnimateTime = 2000;
+        config2.waveHeight = 0.3;
+        config2.waveCount = 1;
+        var guage2 = loadLiquidFillGauge("fillgauge2", 40, config2);
+
+    </script>
+</body>
+</html>
