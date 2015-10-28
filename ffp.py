@@ -3,7 +3,9 @@ from __future__ import print_function
 import time
 from datetime import date
 from datetime import timedelta
+import json
 
+from bokeh.charts import Bar, output_file, show
 from alchemyapi import AlchemyAPI
 from TwitterAPI import TwitterAPI
 from TwitterKeys import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET
@@ -12,6 +14,7 @@ from TwitterKeys import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_
 today = date.today()
 offset = (today.weekday() - 6) % 7
 last_sunday = today - timedelta(offset)
+
 
 def main():
     api = TwitterAPI(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
@@ -30,8 +33,9 @@ def main():
         collection2.append(item['text'])
     score1 = calculate_sentiment(collection1)
     score2 = calculate_sentiment(collection2)
-    print(PLAYER_ONE + ": " + str(score1))
-    print(PLAYER_TWO + ": " + str(score2))
+    #print(PLAYER_ONE + ": " + str(score1))
+    #print(PLAYER_TWO + ": " + str(score2))
+    write_json(score1, score2)
 
 def calculate_sentiment(tweet_collection):
     sentiment = [0.0,0.0]
@@ -53,6 +57,17 @@ def calculate_sentiment(tweet_collection):
     #Percent of positive replies
     score = (float(sentiment[1])/counter)*100
     return score
+
+def write_json(score1, score2):
+    data = {
+        'score1' : score1,
+        'score2' : score2
+    }
+
+    json_str = json.dumps(data)
+    fd = open('data.json', 'w')
+    fd.write(json_str)
+    fd.close()
 
 
 if __name__ == "__main__":
