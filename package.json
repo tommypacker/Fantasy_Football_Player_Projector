@@ -1,0 +1,19 @@
+{
+  "name": "ffp",
+  "version": "1.0.0",
+  "description": "This python app utilizes TwitterAPI and Alchemy Api to make predictions about different fantasy players.  When you enter the name of a football player, it will retrieve tweets and tell you how people from twitter feel about that player for the upcoming week.",
+  "main": "liquidFillGauge.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tommypacker/Fantasy_Football_Player_Projector.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tommypacker/Fantasy_Football_Player_Projector/issues"
+  },
+  "homepage": "https://github.com/tommypacker/Fantasy_Football_Player_Projector#readme"
+}

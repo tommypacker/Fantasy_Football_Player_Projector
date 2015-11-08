@@ -32,7 +32,11 @@
             </div>
         </div>
         <script language="JavaScript">
-            var player1 = 10;
+        	var s = "data.json";
+        	var json = JSON.parse(JSON.stringify("data.json"));
+        </script>
+        <script language="JavaScript">
+            var player1 = json["score1"];
             var player2 = 10;
             var config1 = liquidFillGaugeDefaultSettings();
             config1.circleColor = "#FF7777";
@@ -42,7 +46,7 @@
             config1.circleThickness = 0.2;
             config1.textVertPosition = 0.2;
             config1.waveAnimateTime = 1000;
-            var gauge1= loadLiquidFillGauge("fillgauge1", 50, config1);
+            var gauge1= loadLiquidFillGauge("fillgauge1", player1, config1);
             var config2 = liquidFillGaugeDefaultSettings();
             config2.circleColor = "#178BCA";
             config2.textColor = "#045681";

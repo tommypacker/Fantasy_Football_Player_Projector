@@ -58,10 +58,7 @@ def calculate_sentiment(tweet_collection):
     return score
 
 def write_json(PLAYER_ONE, PLAYER_TWO, score1, score2):
-    data = {
-        PLAYER_ONE : score1,
-        PLAYER_TWO : score2
-    }
+    data = [{"player1": PLAYER_ONE, "score1": score1}, {"player2": PLAYER_TWO, "score2": score2}]
 
     json_str = json.dumps(data)
     fd = open('data.json', 'w')
