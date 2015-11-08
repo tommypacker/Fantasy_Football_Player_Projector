@@ -1,1 +1,1 @@
-[{"player1": "Tom Brady", "score1": 66.66666666666666}, {"player2": "Peyton Manning", "score2": 12.5}]
+{"players": [{"score": 63.63636363636363, "name": "Tom Brady"}, {"score": 11.11111111111111, "name": "Peyton Manning"}]}

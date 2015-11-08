@@ -7,14 +7,17 @@
         <script src="http://d3js.org/d3.v3.min.js" language="JavaScript"></script>
         <script src="liquidFillGauge.js" language="JavaScript"></script>
         <script type="text/javascript">
+        	var players = [];
             function loadJSON(){
                 $(document).ready(function()
                 {
-                    $.getJSON("data.json", function() {
-                        console.log("success");
+                    $.getJSON("data.json", function(data) {
+                        players.push(data.players[0]);
+                        console.log(players[0]); //Returns the correct object
                     });
                 });
             }
+            console.log(players[0]); //Returns undefined
         </script>
         <style>
             .liquidFillGaugeText { font-family: Helvetica; font-weight: bold; }
@@ -32,11 +35,7 @@
             </div>
         </div>
         <script language="JavaScript">
-        	var s = "data.json";
-        	var json = JSON.parse(JSON.stringify("data.json"));
-        </script>
-        <script language="JavaScript">
-            var player1 = json["score1"];
+            var player1 = 5;
             var player2 = 10;
             var config1 = liquidFillGaugeDefaultSettings();
             config1.circleColor = "#FF7777";
@@ -46,7 +45,7 @@
             config1.circleThickness = 0.2;
             config1.textVertPosition = 0.2;
             config1.waveAnimateTime = 1000;
-            var gauge1= loadLiquidFillGauge("fillgauge1", player1, config1);
+            var gauge1= loadLiquidFillGauge("fillgauge1", 15, config1);
             var config2 = liquidFillGaugeDefaultSettings();
             config2.circleColor = "#178BCA";
             config2.textColor = "#045681";
