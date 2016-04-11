@@ -49,6 +49,15 @@
         </style>
     </head>
     <body onLoad="loadJSON();">
+        <div class="submit">
+            <h1>Enter Player Names</h1>
+            <form action="/playerNames/" method="post">
+                <input type="text" name="playerOneName">
+                <input type="text" name="playerTwoName">
+                <p><button id="submitButton"/>Submit</p>
+            </form>
+        </div>
+
         <div id="container" style = "width:100%">
             <div style = "float:left; width: 50%;">
                 <svg id="fillgauge1" width="97%" height="250"></svg>

@@ -5,7 +5,6 @@ from datetime import date
 from datetime import timedelta
 import json
 
-from bokeh.charts import Bar, output_file, show
 from alchemyapi import AlchemyAPI
 from TwitterAPI import TwitterAPI
 from TwitterKeys import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET
