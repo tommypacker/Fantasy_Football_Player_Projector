@@ -54,14 +54,18 @@ def calculate_sentiment(tweet_collection):
         else:
             print('Error in sentiment analysis call: ', response['statusInfo'])
     #Percent of positive replies
-    score = (float(sentiment[1])/counter)*100
+    if(counter != 0):
+        score = (float(sentiment[1])/counter)*100
+    else:
+        score = 0
+
     return score
 
 def write_json(PLAYER_ONE, PLAYER_TWO, score1, score2):
     data = {"players": [{"name": PLAYER_ONE, "score": score1}, {"name": PLAYER_TWO, "score": score2}]}
 
     json_str = json.dumps(data)
-    fd = open('data.json', 'w')
+    fd = open('static/data.json', 'w')
     fd.write(json_str)
     fd.close()
 
