@@ -6,7 +6,6 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://d3js.org/d3.v3.min.js" language="JavaScript"></script>
-        <!--<script src="liquidFillGauge.js" language="JavaScript"></script>-->
         <script type="text/javascript" src="{{url_for('static', filename='liquidFillGauge.js')}}"></script>
         <script type="text/javascript">
             function loadJSON(){
@@ -57,16 +56,9 @@
                 <p><button id="submitButton"/>Submit</p>
             </form>
         </div>
-
         <div id="container" style = "width:100%">
-            <div style = "float:left; width: 50%;">
-                <svg id="fillgauge1" width="97%" height="250"></svg>
-                <h2 id="playerOne">Player One</h2>
-            </div>
-            <div style = "float:left; width:50%;">
-                <svg id="fillgauge2" width="97%" height="250"></svg>
-                <h2 id="playerTwo">Player Three</h2>
-            </div>
+            {% block guages %}
+            {% endblock %}
         </div>
     </body>
 </html>
