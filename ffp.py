@@ -14,11 +14,9 @@ today = date.today()
 offset = (today.weekday() - 6) % 7
 last_sunday = today - timedelta(offset)
 
-def main():
+def execute(PLAYER_ONE, PLAYER_TWO):
     api = TwitterAPI(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
-    PLAYER_ONE = raw_input("Enter the name of player one: ")
-    PLAYER_TWO = raw_input("Enter the name of player two: ")
-    count = raw_input("Enter the number of tweets to check: ")
+    count = 10
     lang = 'en'
     # List of all the tweets
     collection1 = []
@@ -31,8 +29,6 @@ def main():
         collection2.append(item['text'])
     score1 = calculate_sentiment(collection1)
     score2 = calculate_sentiment(collection2)
-    #print(PLAYER_ONE + ": " + str(score1))
-    #print(PLAYER_TWO + ": " + str(score2))
     write_json(PLAYER_ONE, PLAYER_TWO, score1, score2)
 
 def calculate_sentiment(tweet_collection):
@@ -67,7 +63,3 @@ def write_json(PLAYER_ONE, PLAYER_TWO, score1, score2):
     fd = open('static/data.json', 'w')
     fd.write(json_str)
     fd.close()
-
-
-if __name__ == "__main__":
-    main()
