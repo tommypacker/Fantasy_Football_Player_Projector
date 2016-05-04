@@ -22,8 +22,21 @@
             </form>
         </div>
         <div id="container" style = "width:100%">
-            {% block guages %}
-            {% endblock %}
+            {% if data != "" %}
+            <script type="text/javascript">
+                loadJSON({{ data|safe }});
+            </script>
+            <div>
+                <div style = "float:left; width: 50%;">
+                    <svg id="fillgauge1" width="97%" height="250"></svg>
+                    <h2 id="playerOne">Player One</h2>
+                </div>
+                <div style = "float:left; width:50%;">
+                    <svg id="fillgauge2" width="97%" height="250"></svg>
+                    <h2 id="playerTwo">Player Three</h2>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </body>
 </html>
