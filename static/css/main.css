@@ -1,0 +1,23 @@
+.submit{
+	width: 940px;
+  	margin: 0 auto;
+  	text-align: center;
+}
+
+.gaugeName{
+	text-align: center
+}
+
+#title{
+	font-family: 'Open Sans';
+    font-size: 50px;
+    font-weight: bold;
+}
+
+#playerOne{
+	font-family: 'Open Sans';
+}
+
+#playerTwo{
+	font-family: 'Open Sans';
+}

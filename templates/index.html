@@ -3,9 +3,11 @@
     <head lang="en">
         <meta charset="UTF-8">
         <title></title>
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://d3js.org/d3.v3.min.js" language="JavaScript"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
         <script type="text/javascript" src="{{url_for('static', filename='liquidFillGauge.js')}}"></script>
         <script type="text/javascript" src="{{url_for('static', filename='loadJSONData.js')}}"></script>
         <style>
@@ -13,27 +15,35 @@
         </style>
     </head>
     <body>
-        <div class="submit">
-            <h1>Enter Player Names</h1>
-            <form action="/playerNames/" method="post">
-                <input type="text" name="playerOneName">
-                <input type="text" name="playerTwoName">
-                <p><button id="submitButton"/>Submit</p>
-            </form>
-        </div>
         <div id="container" style = "width:100%">
+            <div class="submit">
+                <h1 id="title">Enter Names</h1>
+                <form action="/playerNames/" method="post">
+                    <input type="text" name="playerOneName">
+                    <input type="text" name="playerTwoName">
+                    <p><button id="submitButton"/>Submit</button></p>
+                </form>
+            </div>
             {% if data != "" %}
             <script type="text/javascript">
                 loadJSON({{ data|safe }});
             </script>
             <div>
                 <div style = "float:left; width: 50%;">
-                    <svg id="fillgauge1" width="97%" height="250"></svg>
-                    <h2 id="playerOne">Player One</h2>
+                    <div class="gauge">
+                        <svg id="fillgauge1" width="100%" height="250"></svg>
+                    </div>
+                    <div class="gaugeName">
+                        <h2 id="playerOne">Player One</h2>
+                    </div>
                 </div>
                 <div style = "float:left; width:50%;">
-                    <svg id="fillgauge2" width="97%" height="250"></svg>
-                    <h2 id="playerTwo">Player Three</h2>
+                    <div class="gauge">
+                        <svg id="fillgauge2" width="100%" height="250"></svg>
+                    </div>
+                    <div class="gaugeName">
+                        <h2 id="playerTwo">Player Two</h2>
+                    </div>
                 </div>
             </div>
             {% endif %}
