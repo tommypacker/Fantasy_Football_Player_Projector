@@ -10,7 +10,7 @@ function loadJSON(data){
         config1.waveColor = "#FFDDDD";
         config1.circleThickness = 0.2;
         config1.textVertPosition = 0.2;
-        config1.waveAnimateTime = 1000;
+        config1.waveAnimateTime = 1500;
         var gauge1= loadLiquidFillGauge("fillgauge1", score1, config1);
         $("#playerTwo").html(data.players[1].name);
         var config2 = liquidFillGaugeDefaultSettings();
@@ -20,9 +20,7 @@ function loadJSON(data){
         config2.waveColor = "#178BCA";
         config2.circleThickness = 0.2;
         config2.textVertPosition = 0.2;
-        config2.waveAnimateTime = 2000;
-        config2.waveHeight = 0.3;
-        config2.waveCount = 1;
+        config2.waveAnimateTime = 1500;
         var guage2 = loadLiquidFillGauge("fillgauge2", score2, config2);
         $("#playerOne").html(data.players[0].name);
     });

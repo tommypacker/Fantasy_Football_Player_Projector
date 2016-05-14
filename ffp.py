@@ -21,10 +21,10 @@ def execute(PLAYER_ONE, PLAYER_TWO):
     # List of all the tweets
     collection1 = []
     collection2 = []
-    r1 = api.request('search/tweets', {'lang': lang, 'q': PLAYER_ONE, 'count': count, 'since': last_sunday})
+    r1 = api.request('search/tweets', {'lang': lang, 'q': PLAYER_ONE + " fantasy", 'count': count, 'since': last_sunday})
     for item in r1:
     	collection1.append(item['text'])
-    r2 = api.request('search/tweets', {'lang': lang, 'q': PLAYER_TWO, 'count': count, 'since': last_sunday})
+    r2 = api.request('search/tweets', {'lang': lang, 'q': PLAYER_TWO + " fantasy", 'count': count, 'since': last_sunday})
     for item in r2:
         collection2.append(item['text'])
     score1 = calculate_sentiment(collection1)
