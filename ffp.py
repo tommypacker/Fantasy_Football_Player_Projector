@@ -3,10 +3,12 @@ import time
 from datetime import date
 from datetime import timedelta
 import json
+import requests
 
 from alchemyapi import AlchemyAPI
 from TwitterAPI import TwitterAPI
 from TwitterKeys import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET
+from CounterKey import COUNTER_KEY
 
 #Retrieves the date of the last Sunday
 today = date.today()
@@ -15,24 +17,26 @@ last_sunday = today - timedelta(offset)
 
 def execute(PLAYER_ONE, PLAYER_TWO):
     api = TwitterAPI(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
-    count = 3
+    count = 10
     lang = 'en'
     # List of all the tweets
     collection1 = []
     collection2 = []
     followerCount1 = []
     followerCount2 = []
-    r1 = api.request('search/tweets', {'lang': lang, 'q': PLAYER_ONE + " fantasy", 'count': count, 'since': last_sunday})
+    r1 = api.request('search/tweets', {'lang': lang, 'q': PLAYER_ONE, 'count': count, 'since': last_sunday})
     for item in r1:
         ID = item['user']['id']
-        count = getFollowerCount(ID, api)
-        followerCount1.append(count)
+        followCount = getFollowerCount(ID)
+        followerCount1.append(followCount)
     	collection1.append(item['text'])
-    r2 = api.request('search/tweets', {'lang': lang, 'q': PLAYER_TWO + " fantasy", 'count': count, 'since': last_sunday})
+    print
+    print
+    r2 = api.request('search/tweets', {'lang': lang, 'q': PLAYER_TWO, 'count': count, 'since': last_sunday})
     for item in r2:
         ID = item['user']['id']
-        count = getFollowerCount(ID, api)
-        followerCount2.append(count)
+        followCount = getFollowerCount(ID)
+        followerCount2.append(followCount)
         collection2.append(item['text'])
     score1 = calculate_sentiment(collection1, followerCount1)
     score2 = calculate_sentiment(collection2, followerCount2)
@@ -42,6 +46,9 @@ def calculate_sentiment(tweet_collection, count_collection):
     sentiment = [0.0,0.0]
     counter = 0
     alchemyapi = AlchemyAPI()
+    print count_collection
+    print
+    print
 
     for tweet_text in xrange(len(tweet_collection)):
         response = alchemyapi.sentiment('html', tweet_collection[tweet_text])
@@ -63,14 +70,16 @@ def calculate_sentiment(tweet_collection, count_collection):
 
     return score
 
-def getFollowerCount(ID, api):
-    count = 0
-    r = api.request('followers/ids', {'user_id': ID})
-    s = r.json()
-    if r.status_code == 200:
-        for item in s['ids']:
-            count += 1
-    return count
+def getFollowerCount(ID):
+    url = 'http://api.twittercounter.com/?apikey=' + COUNTER_KEY + '&twitter_id=' + str(ID)
+    r = requests.get(url)
+    dataJSON = r.json()
+    try:
+        toReturn = dataJSON['followers_current']
+        return toReturn
+    except KeyError:
+        return 1
+    return 1
 
 
 def write_json(PLAYER_ONE, PLAYER_TWO, score1, score2):
