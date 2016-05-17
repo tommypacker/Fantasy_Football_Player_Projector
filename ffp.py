@@ -78,8 +78,18 @@ def getFollowerCount(ID):
         toReturn = dataJSON['followers_current']
         return toReturn
     except KeyError:
-        return 1
+        return fallbackFollowerCount(ID)
     return 1
+
+def fallbackFollowerCount(ID):
+    api = TwitterAPI(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
+    count = 0
+    r = api.request('followers/ids', {'user_id': ID})
+    s = r.json()
+    if r.status_code == 200:
+        for item in s['ids']:
+            count+=1
+    return count
 
 
 def write_json(PLAYER_ONE, PLAYER_TWO, score1, score2):
