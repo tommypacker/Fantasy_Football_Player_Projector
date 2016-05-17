@@ -4,6 +4,7 @@ from datetime import date
 from datetime import timedelta
 import json
 import requests
+import math
 
 from alchemyapi import AlchemyAPI
 from TwitterAPI import TwitterAPI
@@ -17,7 +18,7 @@ last_sunday = today - timedelta(offset)
 
 def execute(PLAYER_ONE, PLAYER_TWO):
     api = TwitterAPI(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
-    count = 10
+    count = 30
     lang = 'en'
     # List of all the tweets
     collection1 = []
@@ -40,33 +41,38 @@ def execute(PLAYER_ONE, PLAYER_TWO):
         collection2.append(item['text'])
     score1 = calculate_sentiment(collection1, followerCount1)
     score2 = calculate_sentiment(collection2, followerCount2)
-    return write_json(PLAYER_ONE, PLAYER_TWO, score1, score2)
+    print score1
+    print score2
+    if(score1 < 0 and score2 > 0):
+        return write_json(PLAYER_ONE, PLAYER_TWO, 0, 100)
+    elif(score1 > 0 and score2 < 0):
+        return write_json(PLAYER_ONE, PLAYER_TWO, 100, 0)
+    combinedScore = score1 + score2
+    print float(score1)/combinedScore
+    return write_json(PLAYER_ONE, PLAYER_TWO, float(score1)/combinedScore * 100, float(score2)/combinedScore *100) 
 
 def calculate_sentiment(tweet_collection, count_collection):
-    sentiment = [0.0,0.0]
     counter = 0
+    score = 0.0
     alchemyapi = AlchemyAPI()
     print count_collection
     print
     print
 
-    for tweet_text in xrange(len(tweet_collection)):
-        response = alchemyapi.sentiment('html', tweet_collection[tweet_text])
+    for i in range(len(tweet_collection)):
+        response = alchemyapi.sentiment('html', tweet_collection[i])
         if response['status'] == 'OK':
             response['usage'] = ''
             if 'score' in response['docSentiment']:
-                if(float(response['docSentiment']['score']) < 0):
-                    sentiment[0] += 1
-                else:
-                    sentiment[1] += 1
+                score += float(response['docSentiment']['score'])*math.log10(count_collection[i]+1)
                 counter += 1
         else:
             print 'Error in sentiment analysis call: ', response['statusInfo']
     #Percent of positive replies
     if(counter != 0):
-        score = (float(sentiment[1])/counter)*100
+        score /= float(counter)
     else:
-        score = 0
+        score = 1
 
     return score
 
