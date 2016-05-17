@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import print_function
 import time
 from datetime import date
 from datetime import timedelta
@@ -16,22 +15,30 @@ last_sunday = today - timedelta(offset)
 
 def execute(PLAYER_ONE, PLAYER_TWO):
     api = TwitterAPI(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
-    count = 20
+    count = 3
     lang = 'en'
     # List of all the tweets
     collection1 = []
     collection2 = []
+    followerCount1 = []
+    followerCount2 = []
     r1 = api.request('search/tweets', {'lang': lang, 'q': PLAYER_ONE + " fantasy", 'count': count, 'since': last_sunday})
     for item in r1:
+        ID = item['user']['id']
+        count = getFollowerCount(ID, api)
+        followerCount1.append(count)
     	collection1.append(item['text'])
     r2 = api.request('search/tweets', {'lang': lang, 'q': PLAYER_TWO + " fantasy", 'count': count, 'since': last_sunday})
     for item in r2:
+        ID = item['user']['id']
+        count = getFollowerCount(ID, api)
+        followerCount2.append(count)
         collection2.append(item['text'])
-    score1 = calculate_sentiment(collection1)
-    score2 = calculate_sentiment(collection2)
+    score1 = calculate_sentiment(collection1, followerCount1)
+    score2 = calculate_sentiment(collection2, followerCount2)
     return write_json(PLAYER_ONE, PLAYER_TWO, score1, score2)
 
-def calculate_sentiment(tweet_collection):
+def calculate_sentiment(tweet_collection, count_collection):
     sentiment = [0.0,0.0]
     counter = 0
     alchemyapi = AlchemyAPI()
@@ -47,7 +54,7 @@ def calculate_sentiment(tweet_collection):
                     sentiment[1] += 1
                 counter += 1
         else:
-            print('Error in sentiment analysis call: ', response['statusInfo'])
+            print 'Error in sentiment analysis call: ', response['statusInfo']
     #Percent of positive replies
     if(counter != 0):
         score = (float(sentiment[1])/counter)*100
@@ -55,6 +62,16 @@ def calculate_sentiment(tweet_collection):
         score = 0
 
     return score
+
+def getFollowerCount(ID, api):
+    count = 0
+    r = api.request('followers/ids', {'user_id': ID})
+    s = r.json()
+    if r.status_code == 200:
+        for item in s['ids']:
+            count += 1
+    return count
+
 
 def write_json(PLAYER_ONE, PLAYER_TWO, score1, score2):
     data = {"players": [{"name": PLAYER_ONE, "score": score1}, {"name": PLAYER_TWO, "score": score2}]}
